@@ -35,7 +35,7 @@ public class StarWarsAPI {
 
     public StarWarsAPI() {}
 
-    public void getAll(String category, final int pag, Context ctx, final MainListAdapter adapter, final TextView num_pags) {
+    public void getAll(final String category, final int pag, Context ctx, final MainListAdapter adapter, final TextView num_pags) {
         adapter.clear();
         adapter.notifyDataSetChanged();
 
@@ -48,7 +48,12 @@ public class StarWarsAPI {
                     JSONArray jsonArray = response.getJSONArray("results");
                     for(int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        Item item = new Item(jsonObject.getString("name"), jsonObject.getString("url"));
+                        String camp = "name";
+                        if (category == "films") {
+
+                            camp = "title";
+                        }
+                        Item item = new Item(jsonObject.getString(camp), jsonObject.getString("url"));
                         adapter.add(item);
                         adapter.notifyDataSetChanged();
                     }

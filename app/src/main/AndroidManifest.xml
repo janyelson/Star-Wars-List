@@ -26,13 +26,29 @@
             android:theme="@style/NewAppTheme" />
         <activity
             android:name=".activities.Description"
-            android:label="Description"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".activities.DescriptionFilm" />
-        <activity android:name=".activities.DescriptionPlanet" />
-        <activity android:name=".activities.DescriptionSpecie" />
-        <activity android:name=".activities.DescriptionStarship" />
-        <activity android:name=".activities.DescriptionVehicle"></activity>
+            android:label="People Description"
+            android:theme="@style/NewAppTheme"
+            android:parentActivityName=".activities.Home"/>
+        <activity android:name=".activities.DescriptionFilm"
+            android:label="Film Description"
+            android:theme="@style/NewAppTheme"
+            android:parentActivityName=".activities.Home"/>
+        <activity android:name=".activities.DescriptionPlanet"
+            android:label="Planet Description"
+            android:theme="@style/NewAppTheme"
+            android:parentActivityName=".activities.Home"/>
+        <activity android:name=".activities.DescriptionSpecie"
+            android:label="Specie Description"
+            android:theme="@style/NewAppTheme"
+            android:parentActivityName=".activities.Home"/>
+        <activity android:name=".activities.DescriptionStarship"
+            android:label="Starship Description"
+            android:theme="@style/NewAppTheme"
+            android:parentActivityName=".activities.Home"/>
+        <activity android:name=".activities.DescriptionVehicle"
+            android:label="Vehicle Description"
+            android:theme="@style/NewAppTheme"
+            android:parentActivityName=".activities.Home"/>
     </application>
 
 </manifest>

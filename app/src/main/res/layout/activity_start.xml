@@ -15,11 +15,15 @@
         android:src="@drawable/logostarwars" />
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="monospace"
         android:gravity="center"
         android:text="List"
-        android:textColor="#fff"
-        android:textSize="30dp" />
+        android:textAllCaps="true"
+        android:textColor="@android:color/holo_orange_light"
+        android:textSize="36sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

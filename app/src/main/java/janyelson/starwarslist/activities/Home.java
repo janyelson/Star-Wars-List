@@ -112,7 +112,40 @@ public class Home extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_peoples) {
+            category = "people";
+            pag = 1;
+            new WaitAsync().execute();
+            return true;
+        }
+        if (id == R.id.action_planets) {
+            category = "planets";
+            pag = 1;
+            new WaitAsync().execute();
+            return true;
+        }
+        if (id == R.id.action_films) {
+            category = "films";
+            pag = 1;
+            new WaitAsync().execute();
+            return true;
+        }
+        if (id == R.id.action_species) {
+            category = "species";
+            pag = 1;
+            new WaitAsync().execute();
+            return true;
+        }
+        if (id == R.id.action_starships) {
+            category = "starships";
+            pag = 1;
+            new WaitAsync().execute();
+            return true;
+        }
+        if (id == R.id.action_vehicles) {
+            category = "vehicles";
+            pag = 1;
+            new WaitAsync().execute();
             return true;
         }
 
@@ -121,9 +154,39 @@ public class Home extends AppCompatActivity {
 
     private void openDescription(int position) {
         try {
-            Intent intent = new Intent(this, Description.class);
-            intent.putExtra("url", mainListAdapter.getItem(position).url);
-            startActivity(intent);
+            Intent intent;
+            switch(category) {
+                case "people":
+                    intent = new Intent(this, Description.class);
+                    intent.putExtra("url", mainListAdapter.getItem(position).url);
+                    startActivity(intent);
+                    break;
+                case "films":
+                    intent = new Intent(this, DescriptionFilm.class);
+                    intent.putExtra("url", mainListAdapter.getItem(position).url);
+                    startActivity(intent);
+                    break;
+                case "species":
+                    intent = new Intent(this, DescriptionSpecie.class);
+                    intent.putExtra("url", mainListAdapter.getItem(position).url);
+                    startActivity(intent);
+                    break;
+                case "planets":
+                    intent = new Intent(this, DescriptionPlanet.class);
+                    intent.putExtra("url", mainListAdapter.getItem(position).url);
+                    startActivity(intent);
+                    break;
+                case "starships":
+                    intent = new Intent(this, DescriptionStarship.class);
+                    intent.putExtra("url", mainListAdapter.getItem(position).url);
+                    startActivity(intent);
+                    break;
+                case "vehicles":
+                    intent = new Intent(this, DescriptionVehicle.class);
+                    intent.putExtra("url", mainListAdapter.getItem(position).url);
+                    startActivity(intent);
+                    break;
+            }
         }catch(NullPointerException npe) {
             npe.printStackTrace();
         }

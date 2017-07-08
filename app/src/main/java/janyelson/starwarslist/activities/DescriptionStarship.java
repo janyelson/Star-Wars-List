@@ -1,10 +1,12 @@
 package janyelson.starwarslist.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,6 +32,8 @@ public class DescriptionStarship extends AppCompatActivity {
     private ArrayList<Item> values_films, values_pilots;
     public static JSONObject jsonObject = null;
 
+    private ProgressDialog dialog;
+
     private TextView textView_name, textView_model, textView_manufacturer, textView_cost_in_credits, textView_length,
             textView_max_atmosphering_speed, textView_crew, textView_passengers, textView_cargo_capacity, textView_consumables,
             textView_hyperdrive_rating, textView_MGLT, textView_starship_class;
@@ -41,6 +45,10 @@ public class DescriptionStarship extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_description_starship);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        beginDialog();
         url = getIntent().getExtras().getString("url");
         starWarsAPI = new StarWarsAPI();
         ctx = this;
@@ -86,8 +94,7 @@ public class DescriptionStarship extends AppCompatActivity {
             }
         });
 
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        dialog.show();
 
         new WaitAsync().execute();
     }
@@ -106,6 +113,14 @@ public class DescriptionStarship extends AppCompatActivity {
                 startActivity(intent);
                 break;
         }
+    }
+
+    private void beginDialog() {
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Loading...");
+        dialog.setIndeterminate(false);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
     }
 
     private class WaitAsync extends AsyncTask<Void, Void, Void> {
@@ -152,6 +167,9 @@ public class DescriptionStarship extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+            }
+            finally {
+                dialog.dismiss();
             }
             jsonObject = null;
             Log.v("Complete", "Description is loaded!");

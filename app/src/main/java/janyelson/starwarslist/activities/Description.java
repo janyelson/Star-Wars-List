@@ -1,10 +1,12 @@
 package janyelson.starwarslist.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,6 +35,7 @@ public class Description extends AppCompatActivity {
     private Context ctx;
     private ArrayList<Item> values_films, values_species, values_vehicles, values_starship;
     public static JSONObject jsonObject = null;
+    private ProgressDialog dialog;
 
     private TextView textView_name, textView_height, textView_mass, textView_hair_color, textView_skin_color,
             textView_eye_color, textView_birth_year, textView_homeworld;
@@ -46,6 +49,10 @@ public class Description extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_description);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        beginDialog();
         url = getIntent().getExtras().getString("url");
         starWarsAPI = new StarWarsAPI();
         ctx = this;
@@ -114,10 +121,7 @@ public class Description extends AppCompatActivity {
                 toPage("starship", position);
             }
         });
-
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-
+        dialog.show();
         new WaitAsync().execute();
     }
 
@@ -153,6 +157,14 @@ public class Description extends AppCompatActivity {
                 startActivity(intent);
                 break;
         }
+    }
+
+    private void beginDialog() {
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Loading...");
+        dialog.setIndeterminate(false);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
     }
 
 
@@ -205,8 +217,12 @@ public class Description extends AppCompatActivity {
                 for(int i = 0; i < jsonArray.length(); i++) {
                     starWarsAPI.getName(jsonArray.getString(i), ctx, simpleListAdapter_starship, "name");
                 }
+
             } catch (JSONException e) {
                 e.printStackTrace();
+            }
+            finally {
+                dialog.dismiss();
             }
             jsonObject = null;
             Log.v("Complete", "Description is loaded!");

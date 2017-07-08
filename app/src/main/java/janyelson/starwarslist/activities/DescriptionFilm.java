@@ -1,10 +1,12 @@
 package janyelson.starwarslist.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,6 +32,8 @@ public class DescriptionFilm extends AppCompatActivity {
     private ArrayList<Item> values_characters, values_species, values_vehicles, values_starship, values_planets;
     public static JSONObject jsonObject = null;
 
+    private ProgressDialog dialog;
+
     private TextView textView_title, textView_episode, textView_opening_crawl, textView_director, textView_producer,
             textView_release_date;
 
@@ -41,9 +45,13 @@ public class DescriptionFilm extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_description_film);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         url = getIntent().getExtras().getString("url");
         starWarsAPI = new StarWarsAPI();
         ctx = this;
+        beginDialog();
         starWarsAPI.getFilm(url,ctx);
 
         values_characters = new ArrayList<Item>();
@@ -106,8 +114,7 @@ public class DescriptionFilm extends AppCompatActivity {
         });
 
 
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        dialog.show();
 
         new WaitAsync().execute();
     }
@@ -136,6 +143,14 @@ public class DescriptionFilm extends AppCompatActivity {
                 startActivity(intent);
                 break;
         }
+    }
+
+    private void beginDialog() {
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Loading...");
+        dialog.setIndeterminate(false);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
     }
 
     private class WaitAsync extends AsyncTask<Void, Void, Void> {
@@ -191,6 +206,9 @@ public class DescriptionFilm extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+            }
+            finally {
+                dialog.dismiss();
             }
             jsonObject = null;
             Log.v("Complete", "Description is loaded!");

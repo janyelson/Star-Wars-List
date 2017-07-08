@@ -1,10 +1,12 @@
 package janyelson.starwarslist.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,6 +36,8 @@ public class DescriptionVehicle extends AppCompatActivity {
             textView_max_atmosphering_speed, textView_crew, textView_passengers, textView_cargo_capacity, textView_consumables,
             textView_vehicle_class;
 
+    private ProgressDialog dialog;
+
     private SimpleListAdapter simpleListAdapter_films, simpleListAdapter_pilots;
     private CustomListView listView_films, listView_pilots;
 
@@ -42,6 +46,10 @@ public class DescriptionVehicle extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_description_vehicle);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        beginDialog();
         url = getIntent().getExtras().getString("url");
         starWarsAPI = new StarWarsAPI();
         ctx = this;
@@ -85,8 +93,7 @@ public class DescriptionVehicle extends AppCompatActivity {
             }
         });
 
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        dialog.show();
 
         new WaitAsync().execute();
     }
@@ -105,6 +112,14 @@ public class DescriptionVehicle extends AppCompatActivity {
                 startActivity(intent);
                 break;
         }
+    }
+
+    private void beginDialog() {
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Loading...");
+        dialog.setIndeterminate(false);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
     }
 
     private class WaitAsync extends AsyncTask<Void, Void, Void> {
@@ -149,6 +164,9 @@ public class DescriptionVehicle extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+            }
+            finally {
+                dialog.dismiss();
             }
             jsonObject = null;
             Log.v("Complete", "Description is loaded!");

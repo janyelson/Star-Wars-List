@@ -7,6 +7,21 @@
     android:orientation="vertical"
     tools:context="janyelson.starwarslist.activities.DescriptionVehicle">
 
+    <LinearLayout
+        android:id="@+id/linear1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_dark"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            app:popupTheme="@style/Theme.AppCompat.Light.NoActionBar" />
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
